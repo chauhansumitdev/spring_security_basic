@@ -1,10 +1,6 @@
 package com.example.reSpringSecurity.entity;
-
-
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.util.UUID;
 
 @Entity
 @Data
@@ -12,9 +8,9 @@ import java.util.UUID;
 public class User {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    @Column(name = "id")
+    private Integer id;
 
     @Column(name = "username")
     private String username;
