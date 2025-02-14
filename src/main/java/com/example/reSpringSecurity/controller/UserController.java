@@ -41,10 +41,8 @@ public class UserController {
     public ResponseEntity<String> login(@RequestBody UserDTO user) throws Exception {
         log.info( user.getUsername()+ " "+ user.getPassword() );
 
-        if(!userService.login(user)){
-            throw new Exception("LOGIN FAILED");
-        }
 
-        return new ResponseEntity<>("LOGIN SUCCESS", HttpStatus.CREATED);
+
+        return new ResponseEntity<>(userService.login(user), HttpStatus.OK);
     }
 }

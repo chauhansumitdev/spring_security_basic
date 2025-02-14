@@ -23,9 +23,11 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
-    public UserService(AuthenticationManager authenticationManager ,UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, UserMapper userMapper){
+    public UserService(JwtService jwtService, AuthenticationManager authenticationManager ,UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, UserMapper userMapper){
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userMapper = userMapper;
@@ -45,14 +47,17 @@ public class UserService {
     }
 
 
-    public boolean login(UserDTO userDTO){
+    public String login(UserDTO userDTO)throws  Exception{
+
+        log.info(userDTO.getUsername()+ " "+userDTO.getPassword() );
 
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userDTO.getUsername(), userDTO.getPassword()));
 
         if(authentication.isAuthenticated()){
-            return true;
+            log.info("USER AUTHENTICATED : SUCCESS");
+            return jwtService.generateToken(userDTO.getUsername());
         }else{
-            return false;
+            throw new Exception("FAILED TO AUTHENTICATE");
         }
     }
 }

@@ -2,6 +2,7 @@ package com.example.reSpringSecurity.config;
 
 
 import com.example.reSpringSecurity.mapper.UserMapper;
+import com.example.reSpringSecurity.service.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,5 +22,6 @@ public class MiscConfig {
     public ObjectMapper objectMapper(){
         return new ObjectMapper();
     }
+
 
 }

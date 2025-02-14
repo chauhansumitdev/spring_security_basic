@@ -12,7 +12,7 @@ public class JExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String exceptionHandler(Exception e){
-        return "EXCEPTION OCCURED";
+        return e.getMessage();
     }
 
 }
