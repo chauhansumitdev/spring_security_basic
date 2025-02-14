@@ -1,12 +1,11 @@
 package com.example.reSpringSecurity.service;
 
+import com.example.reSpringSecurity.dto.UserDTO;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,14 +24,16 @@ public class JwtService {
     @Value("${jwt.secretkey}")
     private String SECRET;
 
-    public String generateToken(String username){
+    public String generateToken(UserDTO userDTO){
 
         Map<String , Object> claims = new HashMap<>();
+
+        claims.put("email", userDTO.getEmail());
 
         return Jwts
                 .builder()
                 .setClaims(claims)
-                .setSubject(username)
+                .setSubject(userDTO.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()+1000*60))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
@@ -74,6 +75,11 @@ public class JwtService {
 
     public boolean validateToken(String token, UserDetails userDetails) {
         final String userName = extractUserName(token);
+
+        if(isTokenExpired(token)){
+            log.warn("TOKEN EXPIRED : LOGIN AGAIN");
+        }
+
         return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 

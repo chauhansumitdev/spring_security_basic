@@ -55,7 +55,7 @@ public class UserService {
 
         if(authentication.isAuthenticated()){
             log.info("USER AUTHENTICATED : SUCCESS");
-            return jwtService.generateToken(userDTO.getUsername());
+            return jwtService.generateToken(userDTO);
         }else{
             throw new Exception("FAILED TO AUTHENTICATE");
         }
