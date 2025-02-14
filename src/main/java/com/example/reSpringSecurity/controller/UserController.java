@@ -36,4 +36,15 @@ public class UserController {
         log.info( user.getUsername()+ " "+ user.getPassword() );
         return new ResponseEntity<>(userService.registerUser(user), HttpStatus.CREATED);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody UserDTO user) throws Exception {
+        log.info( user.getUsername()+ " "+ user.getPassword() );
+
+        if(!userService.login(user)){
+            throw new Exception("LOGIN FAILED");
+        }
+
+        return new ResponseEntity<>("LOGIN SUCCESS", HttpStatus.CREATED);
+    }
 }
